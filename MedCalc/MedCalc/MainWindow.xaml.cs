@@ -24,5 +24,25 @@ namespace MedCalc
         {
             InitializeComponent();
         }
+
+        private void CalcRoom()
+        {
+            var dtStart = dtRoomIn.Value;
+            var dtEnd = dtRoomOut.Value;
+
+            if(dtEnd <= dtStart)
+            {
+                MessageBox.Show("结束时间要大于开始时间。");
+                return;
+            }
+
+            var dtdiff = dtEnd - dtStart;
+            tbTotalHour.Text = dtdiff.Value.TotalHours.ToString("F3");
+        }
+
+        private void bnCalcTotal_Click(object sender, RoutedEventArgs e)
+        {
+            CalcRoom();
+        }
     }
 }
