@@ -195,7 +195,13 @@ int CMedCalcMDlg::CalcTime()
 	}
 
 	auto tDiff = tEnd - tStart;
-
+	auto nTotalMins = tDiff.GetTotalMinutes();
+	double dTotalHours = (double)nTotalMins / 60.0;
+	CString strTemp;
+	strTemp.Format(_T("%.2f"), dTotalHours);
+	SetDlgItemText(IDC_EDIT_TotalHours, strTemp);
+	strTemp.Format(_T("%.2f"), dTotalHours / 24.0);
+	SetDlgItemText(IDC_EDIT_TotalDays, strTemp);
 
 	return 0;
 }
