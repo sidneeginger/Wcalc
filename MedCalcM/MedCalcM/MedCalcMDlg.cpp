@@ -187,21 +187,38 @@ int CMedCalcMDlg::CalcTime()
 
 	if (tEnd <= tStart)
 	{
-		SetDlgItemText(IDC_TXT_NOTE, _T("结束时间要大于开始时间。"));
+		SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		CleanAll();
 	}
 	else
 	{
-		SetDlgItemText(IDC_TXT_NOTE, _T("请查看计算结果。"));
+		auto tDiff = tEnd - tStart;
+		CalcTotal(tDiff);
+		SetDlgItemText(IDC_TXT_NOTE, _T(""));
 	}
 
-	auto tDiff = tEnd - tStart;
-	auto nTotalMins = tDiff.GetTotalMinutes();
+	return 0;
+}
+
+
+int CMedCalcMDlg::CleanAll()
+{
+	CString strNull = _T("");
+	SetDlgItemText(IDC_EDIT_TotalHours, strNull);
+	SetDlgItemText(IDC_EDIT_TotalDays, strNull);
+
+	return 0;
+}
+
+
+int CMedCalcMDlg::CalcTotal(CTimeSpan &timeSpan)
+{
+	auto nTotalMins = timeSpan.GetTotalMinutes();
 	double dTotalHours = (double)nTotalMins / 60.0;
 	CString strTemp;
 	strTemp.Format(_T("%.2f"), dTotalHours);
 	SetDlgItemText(IDC_EDIT_TotalHours, strTemp);
 	strTemp.Format(_T("%.2f"), dTotalHours / 24.0);
 	SetDlgItemText(IDC_EDIT_TotalDays, strTemp);
-
 	return 0;
 }

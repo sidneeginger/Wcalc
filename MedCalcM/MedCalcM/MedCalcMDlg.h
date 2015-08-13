@@ -38,4 +38,6 @@ public:
 	afx_msg void OnDtnDatetimechangeDatetimepicker1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDatetimechangeDatetimepicker2(NMHDR *pNMHDR, LRESULT *pResult);
 	int CalcTime();
+	int CleanAll();
+	int CalcTotal(CTimeSpan &timeSpan);
 };
