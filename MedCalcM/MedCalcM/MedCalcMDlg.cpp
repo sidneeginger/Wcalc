@@ -103,8 +103,8 @@ BOOL CMedCalcMDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	m_dtStart.SetFormat(_T("yyyy-MM-dd hh:mm:ss"));
-	m_dtEnd.SetFormat(_T("yyyy-MM-dd hh:mm:ss"));
+	m_dtStart.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtEnd.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
