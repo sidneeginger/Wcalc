@@ -187,7 +187,8 @@ int CMedCalcMDlg::CalcTime()
 
 	if (tEnd <= tStart)
 	{
-		SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		//SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		AfxMessageBox(_T("结束时间要大于开始时间！"));
 		CleanAll();
 	}
 	else
