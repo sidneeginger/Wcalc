@@ -34,6 +34,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	double m_dTotalRoomHours;
+	int nMinChange;
 public:
 	CDateTimeCtrl m_dtStart;
 	CDateTimeCtrl m_dtEnd;
@@ -67,4 +68,36 @@ public:
 	void CalcArtery();
 	void CalcGIDEC();
 	void CalcCVVT();
+	afx_msg void OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResult);
+	void OnSpinChange(int nID, int nDelta);
+	afx_msg void OnDeltaposSpin2(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin3(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin4(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin5(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin6(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin7(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin8(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin9(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin10(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin11(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin12(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin13(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin14(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin15(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin16(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin29(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin30(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin31(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin17(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin18(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin19(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin20(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin21(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin22(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin23(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin24(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin25(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin26(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin27(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin28(NMHDR *pNMHDR, LRESULT *pResult);
 };

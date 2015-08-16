@@ -88,6 +88,37 @@ BEGIN_MESSAGE_MAP(CMedCalcMDlg, CDialogEx)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_GIDEC_TO, &CMedCalcMDlg::OnDtnDatetimechangeDtpGidecTo)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_CVVT_FROM, &CMedCalcMDlg::OnDtnDatetimechangeDtpCvvtFrom)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_CVVT_TO, &CMedCalcMDlg::OnDtnDatetimechangeDtpCvvtTo)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN1, &CMedCalcMDlg::OnDeltaposSpin1)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN2, &CMedCalcMDlg::OnDeltaposSpin2)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN3, &CMedCalcMDlg::OnDeltaposSpin3)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN4, &CMedCalcMDlg::OnDeltaposSpin4)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN5, &CMedCalcMDlg::OnDeltaposSpin5)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN6, &CMedCalcMDlg::OnDeltaposSpin6)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN7, &CMedCalcMDlg::OnDeltaposSpin7)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN8, &CMedCalcMDlg::OnDeltaposSpin8)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN9, &CMedCalcMDlg::OnDeltaposSpin9)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN10, &CMedCalcMDlg::OnDeltaposSpin10)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN11, &CMedCalcMDlg::OnDeltaposSpin11)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN12, &CMedCalcMDlg::OnDeltaposSpin12)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN13, &CMedCalcMDlg::OnDeltaposSpin13)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN14, &CMedCalcMDlg::OnDeltaposSpin14)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN15, &CMedCalcMDlg::OnDeltaposSpin15)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN16, &CMedCalcMDlg::OnDeltaposSpin16)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN29, &CMedCalcMDlg::OnDeltaposSpin29)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN30, &CMedCalcMDlg::OnDeltaposSpin30)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN31, &CMedCalcMDlg::OnDeltaposSpin31)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN17, &CMedCalcMDlg::OnDeltaposSpin17)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN18, &CMedCalcMDlg::OnDeltaposSpin18)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN19, &CMedCalcMDlg::OnDeltaposSpin19)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN20, &CMedCalcMDlg::OnDeltaposSpin20)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN21, &CMedCalcMDlg::OnDeltaposSpin21)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN22, &CMedCalcMDlg::OnDeltaposSpin22)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN23, &CMedCalcMDlg::OnDeltaposSpin23)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN24, &CMedCalcMDlg::OnDeltaposSpin24)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN25, &CMedCalcMDlg::OnDeltaposSpin25)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN26, &CMedCalcMDlg::OnDeltaposSpin26)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN27, &CMedCalcMDlg::OnDeltaposSpin27)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN28, &CMedCalcMDlg::OnDeltaposSpin28)
 END_MESSAGE_MAP()
 
 
@@ -532,4 +563,338 @@ void CMedCalcMDlg::CalcCVVT()
 		strTemp.Format(_T("%.2f"), dTotalHours);
 		SetDlgItemText(IDC_EDIT_TotalCVVT, strTemp);
 	}
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+
+	OnSpinChange(IDC_EDIT2, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnSpinChange(int nID, int nDelta)
+{
+	CString str;
+	GetDlgItemText(nID, str);
+	int n = _wtoi(str);
+	if (nDelta == 1)
+	{
+		n--;
+		if (n <= 0)
+		{
+			n = 0;
+		}
+	}
+	else if (nDelta == -1)
+	{
+		n++;
+	}
+
+	str.Format(_T("%d"), n);
+	SetDlgItemText(nID, str);
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin2(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT3, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin3(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT4, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin4(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT5, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin5(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT6, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin6(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT7, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin7(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT8, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin8(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT9, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin9(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT10, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin10(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT11, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin11(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT12, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin12(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT13, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin13(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT14, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin14(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT15, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin15(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT16, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin16(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT17, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin29(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT30, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin30(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT31, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin31(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT32, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin17(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT18, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin18(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT19, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin19(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT20, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin20(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT21, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin21(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT22, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin22(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT23, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin23(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT24, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin24(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT25, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin25(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT26, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin26(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT27, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin27(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT28, pNMUpDown->iDelta);
+
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin28(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT29, pNMUpDown->iDelta);
+
+	*pResult = 0;
 }
