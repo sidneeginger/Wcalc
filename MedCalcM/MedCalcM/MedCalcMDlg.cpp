@@ -78,6 +78,16 @@ BEGIN_MESSAGE_MAP(CMedCalcMDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETIMEPICKER1, &CMedCalcMDlg::OnDtnDatetimechangeDatetimepicker1)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DATETIMEPICKER2, &CMedCalcMDlg::OnDtnDatetimechangeDatetimepicker2)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_VENT_FROM, &CMedCalcMDlg::OnDtnDatetimechangeDtpVentFrom)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_VENT_TO, &CMedCalcMDlg::OnDtnDatetimechangeDtpVentTo)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_ARTERY_FROM, &CMedCalcMDlg::OnDtnDatetimechangeDtpArteryFrom)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_ARTERY_TO, &CMedCalcMDlg::OnDtnDatetimechangeDtpArteryTo)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_VEIN_FROM, &CMedCalcMDlg::OnDtnDatetimechangeDtpVeinFrom)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_VEIN_TO, &CMedCalcMDlg::OnDtnDatetimechangeDtpVeinTo)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_GIDEC_FROM, &CMedCalcMDlg::OnDtnDatetimechangeDtpGidecFrom)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_GIDEC_TO, &CMedCalcMDlg::OnDtnDatetimechangeDtpGidecTo)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_CVVT_FROM, &CMedCalcMDlg::OnDtnDatetimechangeDtpCvvtFrom)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_CVVT_TO, &CMedCalcMDlg::OnDtnDatetimechangeDtpCvvtTo)
 END_MESSAGE_MAP()
 
 
@@ -125,6 +135,8 @@ BOOL CMedCalcMDlg::OnInitDialog()
 	m_dtpGIDECTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 	m_dtpCVVTFrom.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 	m_dtpCVVTTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+
+	m_dTotalRoomHours = 0.0;
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -228,6 +240,8 @@ int CMedCalcMDlg::CleanAll()
 	SetDlgItemText(IDC_EDIT_TotalHours, strNull);
 	SetDlgItemText(IDC_EDIT_TotalDays, strNull);
 
+
+
 	return 0;
 }
 
@@ -236,6 +250,8 @@ int CMedCalcMDlg::CalcTotal(CTimeSpan &timeSpan)
 {
 	auto nTotalMins = timeSpan.GetTotalMinutes();
 	double dTotalHours = (double)nTotalMins / 60.0;
+	m_dTotalRoomHours = dTotalHours;
+
 	CString strTemp;
 	strTemp.Format(_T("%.2f"), dTotalHours);
 	SetDlgItemText(IDC_EDIT_TotalHours, strTemp);
@@ -265,4 +281,255 @@ int CMedCalcMDlg::CalcTotal(CTimeSpan &timeSpan)
 	SetDlgItemText(IDC_EDIT_Glycemic, strTemp);
 
 	return 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpVentFrom(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcVent();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpVentTo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcVent();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::CalcVent()
+{
+	CTime tStart;
+	m_dtpVentFrom.GetTime(tStart);
+	CTime tEnd;
+	m_dtpVentTo.GetTime(tEnd);
+
+	if (tEnd <= tStart)
+	{
+		//SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		AfxMessageBox(_T("结束时间要大于开始时间！"));
+		CString strNull = _T("");
+		SetDlgItemText(IDC_EDIT_TotalVent, strNull);
+		SetDlgItemText(IDC_EDIT_OxyNormal, strNull);
+		SetDlgItemText(IDC_EDIT_Mist, strNull);
+	}
+	else
+	{
+		auto tDiff = tEnd - tStart;
+		
+		auto nTotalMins = tDiff.GetTotalMinutes();
+		double dTotalHours = (double)nTotalMins / 60.0;
+
+		CString strTemp;
+		strTemp.Format(_T("%.2f"), dTotalHours);
+		SetDlgItemText(IDC_EDIT_TotalVent, strTemp);
+
+		strTemp.Format(_T("%.2f"), m_dTotalRoomHours - dTotalHours);
+		SetDlgItemText(IDC_EDIT_OxyNormal, strTemp);
+
+		strTemp.Format(_T("%.2f"), (m_dTotalRoomHours - dTotalHours) / 4);
+		SetDlgItemText(IDC_EDIT_Mist, strTemp);
+	}
+
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpArteryFrom(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcArtery();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpArteryTo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcArtery();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpVeinFrom(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcVein();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpVeinTo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcVein();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpGidecFrom(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcGIDEC();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpGidecTo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcGIDEC();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpCvvtFrom(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcCVVT();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::OnDtnDatetimechangeDtpCvvtTo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	CalcCVVT();
+	*pResult = 0;
+}
+
+
+void CMedCalcMDlg::CalcVein()
+{
+	CTime tStart;
+	m_dtpVeinFrom.GetTime(tStart);
+	CTime tEnd;
+	m_dtpVeinTo.GetTime(tEnd);
+
+	if (tEnd <= tStart)
+	{
+		//SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		AfxMessageBox(_T("结束时间要大于开始时间！"));
+		CString strNull = _T("");
+		SetDlgItemText(IDC_EDIT_TotalVein, strNull);
+	}
+	else
+	{
+		auto tDiff = tEnd - tStart;
+
+		auto nTotalMins = tDiff.GetTotalMinutes();
+		double dTotalHours = (double)nTotalMins / 60.0;
+
+		CString strTemp;
+		strTemp.Format(_T("%.2f"), dTotalHours);
+		SetDlgItemText(IDC_EDIT_TotalVein, strTemp);
+	}
+}
+
+
+void CMedCalcMDlg::CalcArtery()
+{
+	CTime tStart;
+	m_dtpArteryFrom.GetTime(tStart);
+	CTime tEnd;
+	m_dtpArteryTo.GetTime(tEnd);
+
+	if (tEnd <= tStart)
+	{
+		//SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		AfxMessageBox(_T("结束时间要大于开始时间！"));
+		CString strNull = _T("");
+		SetDlgItemText(IDC_EDIT_TotalArtery, strNull);
+	}
+	else
+	{
+		auto tDiff = tEnd - tStart;
+
+		auto nTotalMins = tDiff.GetTotalMinutes();
+		double dTotalHours = (double)nTotalMins / 60.0;
+
+		CString strTemp;
+		strTemp.Format(_T("%.2f"), dTotalHours);
+		SetDlgItemText(IDC_EDIT_TotalArtery, strTemp);
+	}
+}
+
+
+void CMedCalcMDlg::CalcGIDEC()
+{
+	CTime tStart;
+	m_dtpGIDECFrom.GetTime(tStart);
+	CTime tEnd;
+	m_dtpGIDECTo.GetTime(tEnd);
+
+	if (tEnd <= tStart)
+	{
+		//SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		AfxMessageBox(_T("结束时间要大于开始时间！"));
+		CString strNull = _T("");
+		SetDlgItemText(IDC_EDIT_TotalGIDEC, strNull);
+		SetDlgItemText(IDC_EDIT_TotalGIDECDay, strNull);
+		SetDlgItemText(IDC_EDIT_NoseInject, strNull);
+		SetDlgItemText(IDC_EDIT_NosePump, strNull);
+	}
+	else
+	{
+		auto tDiff = tEnd - tStart;
+
+		auto nTotalMins = tDiff.GetTotalMinutes();
+		double dTotalHours = (double)nTotalMins / 60.0;
+
+		CString strTemp;
+		strTemp.Format(_T("%.2f"), dTotalHours);
+		SetDlgItemText(IDC_EDIT_TotalGIDEC, strTemp);
+
+		strTemp.Format(_T("%.2f"), dTotalHours / 24.0);
+		SetDlgItemText(IDC_EDIT_TotalGIDECDay, strTemp);
+
+		strTemp.Format(_T("%.2f"), (m_dTotalRoomHours - dTotalHours) / 24.0);
+		SetDlgItemText(IDC_EDIT_NoseInject, strTemp);
+
+		strTemp.Format(_T("%.2f"), m_dTotalRoomHours - dTotalHours);
+		SetDlgItemText(IDC_EDIT_NosePump, strTemp);
+	}
+}
+
+
+void CMedCalcMDlg::CalcCVVT()
+{
+	CTime tStart;
+	m_dtpCVVTFrom.GetTime(tStart);
+	CTime tEnd;
+	m_dtpCVVTTo.GetTime(tEnd);
+
+	if (tEnd <= tStart)
+	{
+		//SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		AfxMessageBox(_T("结束时间要大于开始时间！"));
+		CString strNull = _T("");
+		SetDlgItemText(IDC_EDIT_TotalCVVT, strNull);
+	}
+	else
+	{
+		auto tDiff = tEnd - tStart;
+
+		auto nTotalMins = tDiff.GetTotalMinutes();
+		double dTotalHours = (double)nTotalMins / 60.0;
+
+		CString strTemp;
+		strTemp.Format(_T("%.2f"), dTotalHours);
+		SetDlgItemText(IDC_EDIT_TotalCVVT, strTemp);
+	}
 }
