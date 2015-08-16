@@ -60,6 +60,16 @@ void CMedCalcMDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_DATETIMEPICKER1, m_dtStart);
 	DDX_Control(pDX, IDC_DATETIMEPICKER2, m_dtEnd);
+	DDX_Control(pDX, IDC_DTP_VENT_FROM, m_dtpVentFrom);
+	DDX_Control(pDX, IDC_DTP_VENT_TO, m_dtpVentTo);
+	DDX_Control(pDX, IDC_DTP_ARTERY_FROM, m_dtpArteryFrom);
+	DDX_Control(pDX, IDC_DTP_ARTERY_TO, m_dtpArteryTo);
+	DDX_Control(pDX, IDC_DTP_VEIN_FROM, m_dtpVeinFrom);
+	DDX_Control(pDX, IDC_DTP_VEIN_TO, m_dtpVeinTo);
+	DDX_Control(pDX, IDC_DTP_GIDEC_FROM, m_dtpGIDECFrom);
+	DDX_Control(pDX, IDC_DTP_GIDEC_TO, m_dtpGIDECTo);
+	DDX_Control(pDX, IDC_DTP_CVVT_FROM, m_dtpCVVTFrom);
+	DDX_Control(pDX, IDC_DTP_CVVT_TO, m_dtpCVVTTo);
 }
 
 BEGIN_MESSAGE_MAP(CMedCalcMDlg, CDialogEx)
@@ -105,6 +115,16 @@ BOOL CMedCalcMDlg::OnInitDialog()
 	// TODO: 在此添加额外的初始化代码
 	m_dtStart.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 	m_dtEnd.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpArteryFrom.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpArteryTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpVentFrom.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpVentTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpVeinFrom.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpVeinTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpGIDECFrom.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpGIDECTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpCVVTFrom.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtpCVVTTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -219,7 +239,30 @@ int CMedCalcMDlg::CalcTotal(CTimeSpan &timeSpan)
 	CString strTemp;
 	strTemp.Format(_T("%.2f"), dTotalHours);
 	SetDlgItemText(IDC_EDIT_TotalHours, strTemp);
+
 	strTemp.Format(_T("%.2f"), dTotalHours / 24.0);
 	SetDlgItemText(IDC_EDIT_TotalDays, strTemp);
+
+	strTemp.Format(_T("%.2f"), dTotalHours / 24.0);
+	SetDlgItemText(IDC_EDIT_ICU, strTemp);
+
+	strTemp.Format(_T("%.2f"), dTotalHours / 24.0);
+	SetDlgItemText(IDC_EDIT_SpongeBath, strTemp);
+
+	strTemp.Format(_T("%.2f"), dTotalHours / 6.0);
+	SetDlgItemText(IDC_EDIT_Mouth, strTemp);
+
+	strTemp.Format(_T("%.2f"), dTotalHours / 24.0);
+	SetDlgItemText(IDC_EDIT_AirBed, strTemp);
+
+	strTemp.Format(_T("%.2f"), dTotalHours / 24.0);
+	SetDlgItemText(IDC_EDIT_ECG, strTemp);
+
+	strTemp.Format(_T("%.2f"), dTotalHours);
+	SetDlgItemText(IDC_EDIT_ECGM, strTemp);
+
+	strTemp.Format(_T("%.2f"), dTotalHours / 3.0);
+	SetDlgItemText(IDC_EDIT_Glycemic, strTemp);
+
 	return 0;
 }

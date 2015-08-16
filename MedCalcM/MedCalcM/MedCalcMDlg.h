@@ -40,4 +40,14 @@ public:
 	int CalcTime();
 	int CleanAll();
 	int CalcTotal(CTimeSpan &timeSpan);
+	CDateTimeCtrl m_dtpVentFrom;
+	CDateTimeCtrl m_dtpVentTo;
+	CDateTimeCtrl m_dtpArteryFrom;
+	CDateTimeCtrl m_dtpArteryTo;
+	CDateTimeCtrl m_dtpVeinFrom;
+	CDateTimeCtrl m_dtpVeinTo;
+	CDateTimeCtrl m_dtpGIDECFrom;
+	CDateTimeCtrl m_dtpGIDECTo;
+	CDateTimeCtrl m_dtpCVVTFrom;
+	CDateTimeCtrl m_dtpCVVTTo;
 };
