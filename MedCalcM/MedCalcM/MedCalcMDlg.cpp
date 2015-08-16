@@ -6,6 +6,7 @@
 #include "MedCalcM.h"
 #include "MedCalcMDlg.h"
 #include "afxdialogex.h"
+#include <locale> 
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -119,6 +120,7 @@ BEGIN_MESSAGE_MAP(CMedCalcMDlg, CDialogEx)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN26, &CMedCalcMDlg::OnDeltaposSpin26)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN27, &CMedCalcMDlg::OnDeltaposSpin27)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN28, &CMedCalcMDlg::OnDeltaposSpin28)
+	ON_BN_CLICKED(IDC_BN_SAVE, &CMedCalcMDlg::OnBnClickedBnSave)
 END_MESSAGE_MAP()
 
 
@@ -168,6 +170,38 @@ BOOL CMedCalcMDlg::OnInitDialog()
 	m_dtpCVVTTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 
 	m_dTotalRoomHours = 0.0;
+
+	//SetDlgItemText(IDC_EDIT2, _T("0"));
+	//SetDlgItemText(IDC_EDIT3, _T("0"));
+	//SetDlgItemText(IDC_EDIT4, _T("0"));
+	//SetDlgItemText(IDC_EDIT5, _T("0"));
+	//SetDlgItemText(IDC_EDIT6, _T("0"));
+	//SetDlgItemText(IDC_EDIT7, _T("0"));
+	//SetDlgItemText(IDC_EDIT8, _T("0"));
+	//SetDlgItemText(IDC_EDIT9, _T("0"));
+	//SetDlgItemText(IDC_EDIT10, _T("0"));
+	//SetDlgItemText(IDC_EDIT11, _T("0"));
+	//SetDlgItemText(IDC_EDIT12, _T("0"));
+	//SetDlgItemText(IDC_EDIT13, _T("0"));
+	//SetDlgItemText(IDC_EDIT14, _T("0"));
+	//SetDlgItemText(IDC_EDIT15, _T("0"));
+	//SetDlgItemText(IDC_EDIT16, _T("0"));
+	//SetDlgItemText(IDC_EDIT17, _T("0"));
+	//SetDlgItemText(IDC_EDIT18, _T("0"));
+	//SetDlgItemText(IDC_EDIT19, _T("0"));
+	//SetDlgItemText(IDC_EDIT20, _T("0"));
+	//SetDlgItemText(IDC_EDIT21, _T("0"));
+	//SetDlgItemText(IDC_EDIT22, _T("0"));
+	//SetDlgItemText(IDC_EDIT23, _T("0"));
+	//SetDlgItemText(IDC_EDIT24, _T("0"));
+	//SetDlgItemText(IDC_EDIT25, _T("0"));
+	//SetDlgItemText(IDC_EDIT26, _T("0"));
+	//SetDlgItemText(IDC_EDIT27, _T("0"));
+	//SetDlgItemText(IDC_EDIT28, _T("0"));
+	//SetDlgItemText(IDC_EDIT29, _T("0"));
+	//SetDlgItemText(IDC_EDIT30, _T("0"));
+	//SetDlgItemText(IDC_EDIT31, _T("0"));
+	//SetDlgItemText(IDC_EDIT32, _T("0"));
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -897,4 +931,216 @@ void CMedCalcMDlg::OnDeltaposSpin28(NMHDR *pNMHDR, LRESULT *pResult)
 	OnSpinChange(IDC_EDIT29, pNMUpDown->iDelta);
 
 	*pResult = 0;
+}
+
+
+CString CMedCalcMDlg::GetCtrlText(int nID)
+{
+	CString str;
+	GetDlgItemText(nID, str);
+	return str;
+}
+
+
+void CMedCalcMDlg::OnBnClickedBnSave()
+{
+	LPCTSTR lpszFilter = _T("TXT Files(*.txt)|*.txt|任何文件|*.*|");
+	CString  filename;
+	CFileDialog dlg(FALSE, lpszFilter, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, lpszFilter, NULL);
+	dlg.DoModal();
+	filename = dlg.GetFileName();
+
+	if (filename.GetLength() <= 0)
+	{
+		//AfxMessageBox(_T("未保存"));
+		return;
+	}
+
+	// save
+	CString strFullName = dlg.GetFolderPath();
+	strFullName += _T("\\");
+	strFullName += filename;
+
+	CStdioFile fReport;
+	fReport.Open(strFullName, CFile::modeReadWrite | CFile::modeCreate | CFile::typeText);
+	setlocale(LC_CTYPE, "chs");
+	CString strTmp;
+
+	strTmp = _T("入科时间 ");
+	strTmp += GetCtrlText(IDC_DATETIMEPICKER1);
+	strTmp += _T(" 至 ");
+	strTmp += GetCtrlText(IDC_DATETIMEPICKER2);
+	strTmp += _T("\t共 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalHours);
+	strTmp += _T("小时 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalDays);
+	strTmp += _T("日");
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("重症 ");
+	strTmp += GetCtrlText(IDC_EDIT_ICU);
+	strTmp += _T("\t擦浴 ");
+	strTmp += GetCtrlText(IDC_EDIT_SpongeBath);
+	strTmp += _T("\t口会护 ");
+	strTmp += GetCtrlText(IDC_EDIT_Mouth);
+	strTmp += _T("\t气垫床 ");
+	strTmp += GetCtrlText(IDC_EDIT_AirBed);
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("心电图 ");
+	strTmp += GetCtrlText(IDC_EDIT_ECG);
+	strTmp += _T("\t心电监测 ");
+	strTmp += GetCtrlText(IDC_EDIT_ECGM);
+	strTmp += _T("\t血糖 ");
+	strTmp += GetCtrlText(IDC_EDIT_Glycemic);
+	fReport.WriteString(strTmp + _T("\r\n"));
+	fReport.WriteString(_T("\r\n"));
+
+	strTmp = _T("呼吸机时间 ");
+	strTmp += GetCtrlText(IDC_DTP_VENT_FROM);
+	strTmp += _T(" 至 ");
+	strTmp += GetCtrlText(IDC_DTP_VENT_TO);
+	strTmp += _T("\t共 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalVent);
+	strTmp += _T("小时 ");
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("正常加压吸氧 ");
+	strTmp += GetCtrlText(IDC_EDIT_OxyNormal);
+	strTmp += _T("\t雾化吸入 ");
+	strTmp += GetCtrlText(IDC_EDIT_Mist);
+	fReport.WriteString(strTmp + _T("\r\n"));
+	fReport.WriteString(_T("\r\n"));
+
+	strTmp = _T("动脉监测时间 ");
+	strTmp += GetCtrlText(IDC_DTP_ARTERY_FROM);
+	strTmp += _T(" 至 ");
+	strTmp += GetCtrlText(IDC_DTP_ARTERY_TO);
+	strTmp += _T("\t共 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalArtery);
+	strTmp += _T("小时 ");
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("静脉监测时间 ");
+	strTmp += GetCtrlText(IDC_DTP_VEIN_FROM);
+	strTmp += _T(" 至 ");
+	strTmp += GetCtrlText(IDC_DTP_VEIN_TO);
+	strTmp += _T("\t共 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalVein);
+	strTmp += _T("小时 ");
+	fReport.WriteString(strTmp + _T("\r\n"));
+	fReport.WriteString(_T("\r\n"));
+
+	strTmp = _T("胃肠减压时间 ");
+	strTmp += GetCtrlText(IDC_DTP_GIDEC_FROM);
+	strTmp += _T(" 至 ");
+	strTmp += GetCtrlText(IDC_DTP_GIDEC_TO);
+	strTmp += _T("\t共 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalGIDEC);
+	strTmp += _T("小时 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalGIDECDay);
+	strTmp += _T("日");
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("鼻饲注食 ");
+	strTmp += GetCtrlText(IDC_EDIT_NoseInject);
+	strTmp += _T("\t鼻饲泵 ");
+	strTmp += GetCtrlText(IDC_EDIT_NosePump);
+	fReport.WriteString(strTmp + _T("\r\n"));
+	fReport.WriteString(_T("\r\n"));
+
+	strTmp = _T("血滤 ");
+	strTmp += GetCtrlText(IDC_DTP_CVVT_FROM);
+	strTmp += _T(" 至 ");
+	strTmp += GetCtrlText(IDC_DTP_CVVT_TO);
+	strTmp += _T("\t共 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalCVVT);
+	strTmp += _T("小时 ");
+	fReport.WriteString(strTmp + _T("\r\n"));
+	fReport.WriteString(_T("\r\n"));
+
+	strTmp = _T("小换药 ");
+	strTmp += GetCtrlText(IDC_EDIT2);
+	strTmp += _T("\t中换药 ");
+	strTmp += GetCtrlText(IDC_EDIT3);
+	strTmp += _T("\t大换药 ");
+	strTmp += GetCtrlText(IDC_EDIT4);
+	strTmp += _T("\tPC ");
+	strTmp += GetCtrlText(IDC_EDIT5);
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("静脉采血 ");
+	strTmp += GetCtrlText(IDC_EDIT6);
+	strTmp += _T("\t动脉采血 ");
+	strTmp += GetCtrlText(IDC_EDIT7);
+	strTmp += _T("\t套管针 ");
+	strTmp += GetCtrlText(IDC_EDIT8);
+	strTmp += _T("\t输血 ");
+	strTmp += GetCtrlText(IDC_EDIT9);
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("留置尿管 ");
+	strTmp += GetCtrlText(IDC_EDIT10);
+	strTmp += _T("\t留置胃管 ");
+	strTmp += GetCtrlText(IDC_EDIT11);
+	strTmp += _T("\t灌流 ");
+	strTmp += GetCtrlText(IDC_EDIT12);
+	strTmp += _T("\t气管插管 ");
+	strTmp += GetCtrlText(IDC_EDIT13);
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("CVC穿刺 ");
+	strTmp += GetCtrlText(IDC_EDIT14);
+	strTmp += _T("\t胸穿 ");
+	strTmp += GetCtrlText(IDC_EDIT15);
+	strTmp += _T("\t腰穿 ");
+	strTmp += GetCtrlText(IDC_EDIT16);
+	strTmp += _T("\t临终护理 ");
+	strTmp += GetCtrlText(IDC_EDIT17);
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("CR ");
+	strTmp += GetCtrlText(IDC_EDIT30);
+	strTmp += _T("\tCT ");
+	strTmp += GetCtrlText(IDC_EDIT31);
+	strTmp += _T("\t会诊 ");
+	strTmp += GetCtrlText(IDC_EDIT32);
+	fReport.WriteString(strTmp + _T("\r\n"));
+	fReport.WriteString(_T("\r\n"));
+
+	strTmp = _T("鼻饲管 ");
+	strTmp += GetCtrlText(IDC_EDIT18);
+	strTmp += _T("\tT管 ");
+	strTmp += GetCtrlText(IDC_EDIT19);
+	strTmp += _T("\t导尿包 ");
+	strTmp += GetCtrlText(IDC_EDIT20);
+	strTmp += _T("\t精密尿袋 ");
+	strTmp += GetCtrlText(IDC_EDIT21);
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("胃管 ");
+	strTmp += GetCtrlText(IDC_EDIT22);
+	strTmp += _T(" \t负压盒 ");
+	strTmp += GetCtrlText(IDC_EDIT23);
+	strTmp += _T("\t舒氧宝 ");
+	strTmp += GetCtrlText(IDC_EDIT24);
+	strTmp += _T("\t血滤 ");
+	strTmp += GetCtrlText(IDC_EDIT25);
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+	strTmp = _T("灌流配套 ");
+	strTmp += GetCtrlText(IDC_EDIT26);
+	strTmp += _T("\t呼吸机管路 ");
+	strTmp += GetCtrlText(IDC_EDIT27);
+	strTmp += _T("\t面罩 ");
+	strTmp += GetCtrlText(IDC_EDIT28);
+	strTmp += _T("\t氧气面罩 ");
+	strTmp += GetCtrlText(IDC_EDIT29);
+	fReport.WriteString(strTmp + _T("\r\n"));
+
+
+	fReport.Flush();
+	fReport.Close();
+
+	AfxMessageBox(_T("数据保存成功！"));
 }

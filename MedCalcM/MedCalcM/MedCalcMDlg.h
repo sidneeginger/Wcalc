@@ -35,6 +35,7 @@ protected:
 private:
 	double m_dTotalRoomHours;
 	int nMinChange;
+	CString GetCtrlText(int nID);
 public:
 	CDateTimeCtrl m_dtStart;
 	CDateTimeCtrl m_dtEnd;
@@ -100,4 +101,5 @@ public:
 	afx_msg void OnDeltaposSpin26(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpin27(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpin28(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedBnSave();
 };
