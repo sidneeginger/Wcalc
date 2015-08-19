@@ -945,21 +945,15 @@ CString CMedCalcMDlg::GetCtrlText(int nID)
 void CMedCalcMDlg::OnBnClickedBnSave()
 {
 	LPCTSTR lpszFilter = _T("TXT Files(*.txt)|*.txt|任何文件|*.*|");
-	CString  filename;
 	CFileDialog dlg(FALSE, lpszFilter, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, lpszFilter, NULL);
-	dlg.DoModal();
-	filename = dlg.GetFileName();
-
-	if (filename.GetLength() <= 0)
+	
+	if (dlg.DoModal() != IDOK)
 	{
-		//AfxMessageBox(_T("未保存"));
 		return;
 	}
 
 	// save
-	CString strFullName = dlg.GetFolderPath();
-	strFullName += _T("\\");
-	strFullName += filename;
+	CString strFullName = dlg.GetPathName();
 
 	CStdioFile fReport;
 	fReport.Open(strFullName, CFile::modeReadWrite | CFile::modeCreate | CFile::typeText);
