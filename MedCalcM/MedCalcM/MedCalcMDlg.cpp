@@ -121,6 +121,7 @@ BEGIN_MESSAGE_MAP(CMedCalcMDlg, CDialogEx)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN27, &CMedCalcMDlg::OnDeltaposSpin27)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN28, &CMedCalcMDlg::OnDeltaposSpin28)
 	ON_BN_CLICKED(IDC_BN_SAVE, &CMedCalcMDlg::OnBnClickedBnSave)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN32, &CMedCalcMDlg::OnDeltaposSpin32)
 END_MESSAGE_MAP()
 
 
@@ -945,21 +946,15 @@ CString CMedCalcMDlg::GetCtrlText(int nID)
 void CMedCalcMDlg::OnBnClickedBnSave()
 {
 	LPCTSTR lpszFilter = _T("TXT Files(*.txt)|*.txt|任何文件|*.*|");
-	CString  filename;
 	CFileDialog dlg(FALSE, lpszFilter, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, lpszFilter, NULL);
-	dlg.DoModal();
-	filename = dlg.GetFileName();
-
-	if (filename.GetLength() <= 0)
+	
+	if (dlg.DoModal() != IDOK)
 	{
-		//AfxMessageBox(_T("未保存"));
 		return;
 	}
 
 	// save
-	CString strFullName = dlg.GetFolderPath();
-	strFullName += _T("\\");
-	strFullName += filename;
+	CString strFullName = dlg.GetPathName();
 
 	CStdioFile fReport;
 	fReport.Open(strFullName, CFile::modeReadWrite | CFile::modeCreate | CFile::typeText);
@@ -1105,6 +1100,8 @@ void CMedCalcMDlg::OnBnClickedBnSave()
 	strTmp += GetCtrlText(IDC_EDIT31);
 	strTmp += _T("\t会诊 ");
 	strTmp += GetCtrlText(IDC_EDIT32);
+	strTmp += _T("\t心电图 ");
+	strTmp += GetCtrlText(IDC_EDIT33);
 	fReport.WriteString(strTmp + _T("\r\n"));
 	fReport.WriteString(_T("\r\n"));
 
@@ -1143,4 +1140,14 @@ void CMedCalcMDlg::OnBnClickedBnSave()
 	fReport.Close();
 
 	AfxMessageBox(_T("数据保存成功！"));
+}
+
+
+void CMedCalcMDlg::OnDeltaposSpin32(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	OnSpinChange(IDC_EDIT33, pNMUpDown->iDelta);
+
+	*pResult = 0;
 }

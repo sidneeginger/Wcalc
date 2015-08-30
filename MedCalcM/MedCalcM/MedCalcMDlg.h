@@ -102,4 +102,5 @@ public:
 	afx_msg void OnDeltaposSpin27(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDeltaposSpin28(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedBnSave();
+	afx_msg void OnDeltaposSpin32(NMHDR *pNMHDR, LRESULT *pResult);
 };
