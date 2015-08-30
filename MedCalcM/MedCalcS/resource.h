@@ -8,6 +8,8 @@
 #define IDR_MedCalcSTYPE                130
 #define IDC_DATETIMEPICKER1             1000
 #define IDC_DATETIMEPICKER2             1001
+#define IDC_EDIT1                       1002
+#define IDC_EDIT_NOTE                   1002
 #define IDC_EDIT_TotalHours             1003
 #define IDC_EDIT_TotalDays              1004
 #define IDC_EDIT_ICU                    1005
@@ -37,6 +39,10 @@
 #define IDC_DTP_CVVT_FROM               1029
 #define IDC_DTP_CVVT_TO                 1030
 #define IDC_EDIT_TotalCVVT              1031
+#define IDC_EDIT_Glycemic2              1032
+#define IDC_DTP_PDT_FROM                1033
+#define IDC_DTP_PDT_TO                  1034
+#define IDC_EDIT_TotalPDT               1035
 #define IDC_SPIN1                       1036
 #define IDC_EDIT2                       1037
 #define IDC_SPIN2                       1038
@@ -99,7 +105,10 @@
 #define IDC_EDIT31                      1095
 #define IDC_SPIN31                      1096
 #define IDC_EDIT32                      1097
-#define IDC_BN_SAVE                     1098
+#define IDC_SPIN32                      1106
+#define IDC_EDIT33                      1107
+#define IDC_SPIN33                      1108
+#define IDC_EDIT34                      1109
 
 // Next default values for new objects
 // 
@@ -107,7 +116,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        311
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

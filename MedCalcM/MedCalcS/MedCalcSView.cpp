@@ -67,6 +67,10 @@ BEGIN_MESSAGE_MAP(CMedCalcSView, CFormView)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN27, &CMedCalcSView::OnDeltaposSpin27)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN28, &CMedCalcSView::OnDeltaposSpin28)
 	ON_COMMAND(ID_FILE_SAVE, &CMedCalcSView::OnFileSave)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_PDT_FROM, &CMedCalcSView::OnDtnDatetimechangeDtpPdtFrom)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_DTP_PDT_TO, &CMedCalcSView::OnDtnDatetimechangeDtpPdtTo)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN32, &CMedCalcSView::OnDeltaposSpin32)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN33, &CMedCalcSView::OnDeltaposSpin33)
 END_MESSAGE_MAP()
 
 // CMedCalcSView 构造/析构
@@ -99,6 +103,8 @@ void CMedCalcSView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DTP_GIDEC_TO, m_dtpGIDECTo);
 	DDX_Control(pDX, IDC_DTP_CVVT_FROM, m_dtpCVVTFrom);
 	DDX_Control(pDX, IDC_DTP_CVVT_TO, m_dtpCVVTTo);
+	DDX_Control(pDX, IDC_DTP_PDT_FROM, m_dtPDTFrom);
+	DDX_Control(pDX, IDC_DTP_PDT_TO, m_dtPDTTo);
 }
 
 BOOL CMedCalcSView::PreCreateWindow(CREATESTRUCT& cs)
@@ -127,6 +133,8 @@ void CMedCalcSView::OnInitialUpdate()
 	m_dtpGIDECTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 	m_dtpCVVTFrom.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 	m_dtpCVVTTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtPDTFrom.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
+	m_dtPDTTo.SetFormat(_T("yyyy-MM-dd HH:mm:ss"));
 }
 
 
@@ -312,6 +320,9 @@ int CMedCalcSView::CalcTotal(CTimeSpan &timeSpan)
 
 	strTemp.Format(_T("%.2f"), dTotalHours / 3.0);
 	SetDlgItemText(IDC_EDIT_Glycemic, strTemp);
+
+	strTemp.Format(_T("%.2f"), dTotalHours / 2.0);
+	SetDlgItemText(IDC_EDIT_Glycemic2, strTemp);
 
 	return 0;
 }
@@ -872,6 +883,16 @@ void CMedCalcSView::OnFileSave()
 	fReport.WriteString(strTmp + _T("\r\n"));
 	fReport.WriteString(_T("\r\n"));
 
+	strTmp = _T("特殊物理降温 ");
+	strTmp += GetCtrlText(IDC_DTP_PDT_FROM);
+	strTmp += _T(" 至 ");
+	strTmp += GetCtrlText(IDC_DTP_PDT_TO);
+	strTmp += _T("\t共 ");
+	strTmp += GetCtrlText(IDC_EDIT_TotalPDT);
+	strTmp += _T("小时 ");
+	fReport.WriteString(strTmp + _T("\r\n"));
+	fReport.WriteString(_T("\r\n"));
+
 	strTmp = _T("小换药 ");
 	strTmp += GetCtrlText(IDC_EDIT2);
 	strTmp += _T("\t中换药 ");
@@ -951,9 +972,81 @@ void CMedCalcSView::OnFileSave()
 	strTmp += GetCtrlText(IDC_EDIT29);
 	fReport.WriteString(strTmp + _T("\r\n"));
 
+	strTmp = _T("IM ");
+	strTmp += GetCtrlText(IDC_EDIT33);
+	strTmp += _T("\tIV ");
+	strTmp += GetCtrlText(IDC_EDIT34);
+	fReport.WriteString(strTmp + _T("\r\n"));
+	fReport.WriteString( _T("\r\n"));
+
+	strTmp = _T("备注：\r\n");
+	strTmp += GetCtrlText(IDC_EDIT_NOTE);
+	fReport.WriteString(strTmp + _T("\r\n"));
 
 	fReport.Flush();
 	fReport.Close();
 
 	AfxMessageBox(_T("数据保存成功！"));
+}
+
+
+void CMedCalcSView::OnDtnDatetimechangeDtpPdtFrom(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	CalcPDT();
+	*pResult = 0;
+}
+
+
+void CMedCalcSView::OnDtnDatetimechangeDtpPdtTo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	CalcPDT();
+	*pResult = 0;
+}
+
+
+int CMedCalcSView::CalcPDT()
+{
+	CTime tStart;
+	m_dtPDTFrom.GetTime(tStart);
+	CTime tEnd;
+	m_dtPDTTo.GetTime(tEnd);
+
+	if (tEnd <= tStart)
+	{
+		//SetDlgItemText(IDC_TXT_NOTE, _T("注意：结束时间要大于开始时间！"));
+		AfxMessageBox(_T("结束时间要大于开始时间！"));
+		CString strNull = _T("");
+		SetDlgItemText(IDC_EDIT_TotalPDT, strNull);
+	}
+	else
+	{
+		auto tDiff = tEnd - tStart;
+
+		auto nTotalMins = tDiff.GetTotalMinutes();
+		double dTotalHours = (double)nTotalMins / 60.0;
+
+		CString strTemp;
+		strTemp.Format(_T("%.2f"), dTotalHours);
+		SetDlgItemText(IDC_EDIT_TotalPDT, strTemp);
+	}
+
+	return 0;
+}
+
+
+void CMedCalcSView::OnDeltaposSpin32(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	OnSpinChange(IDC_EDIT33, pNMUpDown->iDelta);
+	*pResult = 0;
+}
+
+
+void CMedCalcSView::OnDeltaposSpin33(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	OnSpinChange(IDC_EDIT34, pNMUpDown->iDelta);
+	*pResult = 0;
 }

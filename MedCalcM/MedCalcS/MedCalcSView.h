@@ -119,6 +119,13 @@ public:
 	CString GetCtrlText(int nID);
 	
 	afx_msg void OnFileSave();
+	CDateTimeCtrl m_dtPDTFrom;
+	CDateTimeCtrl m_dtPDTTo;
+	afx_msg void OnDtnDatetimechangeDtpPdtFrom(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDtnDatetimechangeDtpPdtTo(NMHDR *pNMHDR, LRESULT *pResult);
+	int CalcPDT();
+	afx_msg void OnDeltaposSpin32(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDeltaposSpin33(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 #ifndef _DEBUG  // MedCalcSView.cpp 中的调试版本
