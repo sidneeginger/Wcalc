@@ -107,26 +107,9 @@ IDR_MAINFRAME MENU
 BEGIN
     POPUP "文件(&F)"
     BEGIN
-        MENUITEM "新建(&N)\tCtrl+N",              ID_FILE_NEW
-        MENUITEM "打开(&O)...\tCtrl+O",           ID_FILE_OPEN
         MENUITEM "保存(&S)\tCtrl+S",              ID_FILE_SAVE
-        MENUITEM "另存为(&A)...",                  ID_FILE_SAVE_AS
-        MENUITEM SEPARATOR
-        MENUITEM "最近的文件",                       ID_FILE_MRU_FILE1, GRAYED
         MENUITEM SEPARATOR
         MENUITEM "退出(&X)",                      ID_APP_EXIT
-    END
-    POPUP "编辑(&E)"
-    BEGIN
-        MENUITEM "撤消(&U)\tCtrl+Z",              ID_EDIT_UNDO
-        MENUITEM SEPARATOR
-        MENUITEM "剪切(&T)\tCtrl+X",              ID_EDIT_CUT
-        MENUITEM "复制(&C)\tCtrl+C",              ID_EDIT_COPY
-        MENUITEM "粘贴(&P)\tCtrl+V",              ID_EDIT_PASTE
-    END
-    POPUP "视图(&V)"
-    BEGIN
-        MENUITEM "工具栏(&T)",                     ID_VIEW_TOOLBAR
     END
     POPUP "帮助(&H)"
     BEGIN
@@ -174,7 +157,7 @@ BEGIN
     DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
 END
 
-IDD_MEDCALCS_FORM DIALOGEX 0, 0, 433, 441
+IDD_MEDCALCS_FORM DIALOGEX 0, 0, 426, 441
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
@@ -345,7 +328,6 @@ BEGIN
     LTEXT           "会诊",IDC_STATIC,210,340,15,8
     CONTROL         "",IDC_SPIN31,"msctls_updown32",UDS_ARROWKEYS,253,339,10,12
     EDITTEXT        IDC_EDIT32,227,339,26,12,ES_RIGHT | ES_AUTOHSCROLL | ES_READONLY
-    PUSHBUTTON      "保存所有数据",IDC_BN_SAVE,361,49,50,14
 END
 
 
@@ -407,7 +389,7 @@ BEGIN
     IDD_MEDCALCS_FORM, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 426
+        RIGHTMARGIN, 419
         TOPMARGIN, 7
         BOTTOMMARGIN, 434
     END

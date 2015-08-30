@@ -57,6 +57,10 @@ public:
 	afx_msg void OnDtnDatetimechangeDtpVentFrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDatetimechangeDtpVentTo(NMHDR *pNMHDR, LRESULT *pResult);
 	void CalcVent();
+	void CalcVein();
+	void CalcArtery();
+	void CalcGIDEC();
+	void CalcCVVT();
 	afx_msg void OnDtnDatetimechangeDtpArteryFrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDatetimechangeDtpArteryTo(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDatetimechangeDtpVeinFrom(NMHDR *pNMHDR, LRESULT *pResult);
@@ -65,10 +69,6 @@ public:
 	afx_msg void OnDtnDatetimechangeDtpGidecTo(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDatetimechangeDtpCvvtFrom(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDtnDatetimechangeDtpCvvtTo(NMHDR *pNMHDR, LRESULT *pResult);
-	void CalcVein();
-	void CalcArtery();
-	void CalcGIDEC();
-	void CalcCVVT();
 	afx_msg void OnDeltaposSpin1(NMHDR *pNMHDR, LRESULT *pResult);
 	void OnSpinChange(int nID, int nDelta);
 	afx_msg void OnDeltaposSpin2(NMHDR *pNMHDR, LRESULT *pResult);
